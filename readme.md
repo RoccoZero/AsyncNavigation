@@ -1,5 +1,14 @@
 # AsyncNavigation
 
+> This fork is packaged as `RoccoZero.AsyncNavigation.Avalonia`, with the matching
+> `RoccoZero.AsyncNavigation` core dependency. Assembly names, namespaces and XAML
+> namespace mappings remain compatible with upstream.
+>
+> The Avalonia adapter uses compiled/property bindings for NativeAOT. During DI
+> shutdown, the view manager releases cache references and lets the service provider
+> dispose its views and view models. Explicit `Clear()` and `Remove(dispose: true)`
+> retain their cleanup behavior. Custom factories own the objects they create.
+
 > A lightweight async navigation framework for .NET desktop apps, built on `Microsoft.Extensions.DependencyInjection`.
 
 [![CI](https://github.com/NeverMorewd/AsyncNavigation/actions/workflows/ci.yml/badge.svg)](https://github.com/NeverMorewd/AsyncNavigation/actions/workflows/ci.yml)

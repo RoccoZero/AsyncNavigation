@@ -7,7 +7,7 @@ using Xunit;
 namespace AsyncNavigation.Tests;
 
 [Collection("RegionManagerCollection")]
-public class NavigationInterceptorTests
+public class NavigationInterceptorTests : IDisposable
 {
     private const string RegionName = "InterceptorRegion";
 
@@ -22,6 +22,8 @@ public class NavigationInterceptorTests
         _interceptor = fixture.Interceptor;
         _interceptor.Reset();
     }
+
+    public void Dispose() => _interceptor.Reset();
 
     private TestRegion BuildRegion()
     {

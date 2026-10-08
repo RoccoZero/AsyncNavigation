@@ -33,17 +33,13 @@ public class ContentRegion : RegionBase<ContentRegion, ContentControl>, IRegionP
 
         control.Bind(
             ContentControl.ContentProperty,
-            new Binding(nameof(RegionContext.Selected)) { Source = _context, Mode = BindingMode.TwoWay });
+            CompiledBinding.Create((RegionContext context) => context.Selected, _context, mode: BindingMode.TwoWay));
     }
 
     public override void Dispose()
     {
         base.Dispose();
         _context.Selected = null;
-        RegionControlAccessor.ExecuteOn(control =>
-        {
-            control.Content = null;
-        });
     }
 
     public override Task ProcessActivateAsync(NavigationContext navigationContext)

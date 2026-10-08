@@ -29,7 +29,9 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+-*'       # pre-release: v2.0.0-beta.1
 
 env:
-  DOTNET_VERSION: '10.0.x'
+  DOTNET_VERSION: |
+    10.0.x
+    11.0.100-rc.1.26425.128
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   WASM_PROJECT: samples/Sample.Avalonia.Browser/Sample.Avalonia.Browser.csproj

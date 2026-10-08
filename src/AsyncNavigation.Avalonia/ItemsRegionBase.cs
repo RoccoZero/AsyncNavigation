@@ -38,7 +38,7 @@ public abstract class ItemsRegionBase<TRegion, TItemsControl>
 
         control.Bind(
             ItemsControl.ItemsSourceProperty,
-            new Binding(nameof(RegionContext.Items)) { Source = _context });
+            CompiledBinding.Create((RegionContext context) => context.Items, _context));
     }
 
 

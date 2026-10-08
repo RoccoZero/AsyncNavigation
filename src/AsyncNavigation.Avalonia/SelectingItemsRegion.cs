@@ -22,6 +22,6 @@ public abstract class SelectingItemsRegion : ItemsRegionBase<SelectingItemsRegio
         base.InitializeOnRegionCreated(control);
         control.Bind(
             SelectingItemsControl.SelectedItemProperty,
-            new Binding(nameof(RegionContext.Selected)) { Source = _context, Mode = BindingMode.TwoWay });
+            CompiledBinding.Create((RegionContext context) => context.Selected, _context, mode: BindingMode.TwoWay));
     }
 }

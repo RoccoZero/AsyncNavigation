@@ -27,10 +27,10 @@ public class TabRegion : RegionBase<TabRegion, TabControl>, IRegionPlacementPart
         base.InitializeOnRegionCreated(control);
         control.Tag = this;
         control.Bind(ItemsControl.ItemsSourceProperty,
-            new Binding(nameof(RegionContext.Items)) { Source = _context });
+            CompiledBinding.Create((RegionContext context) => context.Items, _context));
 
         control.Bind(SelectingItemsControl.SelectedItemProperty,
-            new Binding(nameof(RegionContext.Selected)) { Source = _context, Mode = BindingMode.TwoWay });
+            CompiledBinding.Create((RegionContext context) => context.Selected, _context, mode: BindingMode.TwoWay));
 
         control.ContentTemplate = new FuncDataTemplate<NavigationContext>((context, _) =>
         {

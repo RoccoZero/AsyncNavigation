@@ -1,12 +1,13 @@
 <Project>
     <PropertyGroup>
-        <Version>1.1.0</Version>
-        <Authors>Nevermore</Authors>
-        <RepositoryUrl>https://github.com/NeverMorewd/AsyncNavigation</RepositoryUrl>
+        <Version>2.0.3</Version>
+        <PackageId>RoccoZero.$(MSBuildProjectName)</PackageId>
+        <Authors>Nevermore;RoccoZero</Authors>
+        <RepositoryUrl>https://github.com/RoccoZero/AsyncNavigation</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
-        <PackageProjectUrl>https://github.com/NeverMorewd/AsyncNavigation</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/RoccoZero/AsyncNavigation</PackageProjectUrl>
         <Description>A lightweight asynchronous navigation framework based on Microsoft.Extensions.DependencyInjection</Description>
     </PropertyGroup>
 

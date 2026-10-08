@@ -2,7 +2,7 @@
 using AsyncNavigation.Core;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
+using Avalonia.Controls.Documents;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -49,21 +49,20 @@ public class IconResolver : IIconResolver<Control>
     {
         if (string.IsNullOrWhiteSpace(data)) return null;
 
+        return CreatePath(StreamGeometry.Parse(data), size);
+    }
+
+    private static Path CreatePath(StreamGeometry geometry, double size)
+    {
         var path = new Path
         {
-            Data = StreamGeometry.Parse(data),
+            Data = geometry,
             Width = size,
             Height = size,
             Stretch = Stretch.Uniform,
         };
 
-        path[!Path.FillProperty] = new Binding("Foreground")
-        {
-            RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
-            {
-                AncestorType = typeof(Control)
-            }
-        };
+        path.Bind(Path.FillProperty, path.GetObservable(TextElement.ForegroundProperty));
 
         return path;
     }
@@ -89,20 +88,7 @@ public class IconResolver : IIconResolver<Control>
 
         return resource switch
         {
-            StreamGeometry geometry => new Path
-            {
-                Data = geometry,
-                Width = size,
-                Height = size,
-                Stretch = Stretch.Uniform,
-                [!Path.FillProperty] = new Binding("Foreground")
-                {
-                    RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
-                    {
-                        AncestorType = typeof(Control)
-                    }
-                }
-            },
+            StreamGeometry geometry => CreatePath(geometry, size),
             IImage image => new Image
             {
                 Source = image,

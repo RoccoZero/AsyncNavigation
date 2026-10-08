@@ -201,7 +201,13 @@ internal sealed class ViewManager : IViewManager, IViewPlacementCache
 
     public void Dispose()
     {
-        Clear();
+        // Factory-created views and view models are owned by the service provider.
+        _viewCache.Clear();
+        lock (_lruLock)
+        {
+            _lruList.Clear();
+            _lruIndex.Clear();
+        }
     }
 
     private void DisposeView(IView view)

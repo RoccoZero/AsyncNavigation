@@ -29,12 +29,12 @@ public class TabbedPageRegion : RegionBase<TabbedPageRegion, TabbedPage>, IRegio
         base.InitializeOnRegionCreated(control);
         control.Tag = this;
         control.Bind(TabbedPage.ItemsSourceProperty,
-            new Binding(nameof(RegionContext.Items)) { Source = _context });
+            CompiledBinding.Create((RegionContext context) => context.Items, _context));
 
-        control.Bind(TabbedPage.CurrentPageProperty,
-            new Binding(nameof(RegionContext.Selected)) { Source = _context, Mode = BindingMode.TwoWay });
+        control.Bind(TabbedPage.SelectedIndexProperty,
+            CompiledBinding.Create((RegionContext context) => context.SelectedIndex, _context, mode: BindingMode.TwoWay));
 
-        control.Bind(TabbedPage.HeaderProperty, new Binding(nameof(RegionContext.Selected)) { Source = _context, Mode = BindingMode.TwoWay });
+        control.Bind(TabbedPage.HeaderProperty, CompiledBinding.Create((RegionContext context) => context.Selected, _context, mode: BindingMode.TwoWay));
         control.PageTemplate = new FuncDataTemplate<NavigationContext>((context, _) =>
         {
             var page = new ContentPage

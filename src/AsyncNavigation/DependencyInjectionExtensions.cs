@@ -53,7 +53,8 @@ public static class DependencyInjectionExtensions
             .AddTransient<IRegionIndicatorManager, RegionIndicatorManager>();
     }
 
-    private static IServiceCollection RegisterViewModelAndView<TView, TViewModel, TAware>(
+    private static IServiceCollection RegisterViewModelAndView<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TView,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TViewModel, TAware>(
         this IServiceCollection services,
         string name,
         Func<IServiceProvider, TViewModel>? viewModelBuilder = null)
@@ -83,7 +84,7 @@ public static class DependencyInjectionExtensions
         return services;
     }
 
-    private static IServiceCollection RegisterDialogWindowInternal<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TWindow,
+    private static IServiceCollection RegisterDialogWindowInternal<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TViewModel>(
         this IServiceCollection services,
         string windowName,
@@ -115,7 +116,7 @@ public static class DependencyInjectionExtensions
     /// <summary>
     /// Registers a view and its corresponding view model with the specified view key.
     /// </summary>
-    public static IServiceCollection RegisterView<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TView,
+    public static IServiceCollection RegisterView<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TView,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TViewModel>(this IServiceCollection services, string name)
             where TView : class, IView
             where TViewModel : class
@@ -157,7 +158,7 @@ public static class DependencyInjectionExtensions
     /// <param name="name"></param>
     /// <param name="viewModelBuilder"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterNavigation<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TView,
+    public static IServiceCollection RegisterNavigation<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TView,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TViewModel>(
         this IServiceCollection services,
         string name,
@@ -176,7 +177,7 @@ public static class DependencyInjectionExtensions
     /// <param name="services"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterNavigation<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TView,
+    public static IServiceCollection RegisterNavigation<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TView,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TViewModel>(this IServiceCollection services, string name)
             where TView : class, IView
             where TViewModel : class, INavigationAware
@@ -192,7 +193,7 @@ public static class DependencyInjectionExtensions
     /// <param name="name"></param>
     /// <param name="viewModelBuilder"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterDialog<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TView,
+    public static IServiceCollection RegisterDialog<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TView,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TViewModel>(
         this IServiceCollection services,
         string name,
@@ -211,7 +212,7 @@ public static class DependencyInjectionExtensions
     /// <param name="services"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterDialog<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TView,
+    public static IServiceCollection RegisterDialog<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TView,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TViewModel>(this IServiceCollection services, string name)
             where TView : class, IView
             where TViewModel : class, IDialogAware
@@ -234,7 +235,8 @@ public static class DependencyInjectionExtensions
     /// <param name="serviceDescriptors"></param>
     /// <param name="windowName"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterDialogContainer<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this IServiceCollection serviceDescriptors, string windowName)
+    public static IServiceCollection RegisterDialogContainer<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
+        this IServiceCollection serviceDescriptors, string windowName)
       where T : class, IDialogWindow
     {
         if (windowName == NavigationConstants.DEFAULT_DIALOG_WINDOW_KEY)
@@ -254,7 +256,7 @@ public static class DependencyInjectionExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="serviceDescriptors"></param>
     /// <returns></returns>
-    public static IServiceCollection OverrideDefaultDialogContainer<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this IServiceCollection serviceDescriptors)
+    public static IServiceCollection OverrideDefaultDialogContainer<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(this IServiceCollection serviceDescriptors)
       where T : class, IDialogWindow
     {
         serviceDescriptors.AddKeyedTransient<IDialogWindow, T>(NavigationConstants.DEFAULT_DIALOG_WINDOW_KEY);
@@ -303,7 +305,7 @@ public static class DependencyInjectionExtensions
     /// <param name="windowName"></param>
     /// <param name="viewModelBuilder"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterDialogWindow<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TWindow,
+    public static IServiceCollection RegisterDialogWindow<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TViewModel>(
         this IServiceCollection services,
         string windowName,
@@ -321,7 +323,7 @@ public static class DependencyInjectionExtensions
     /// <param name="services"></param>
     /// <param name="windowName"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterDialogWindow<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TWindow,
+    public static IServiceCollection RegisterDialogWindow<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TViewModel>(this IServiceCollection services, string windowName)
             where TWindow : class, IDialogWindow
             where TViewModel : class, IDialogAware
