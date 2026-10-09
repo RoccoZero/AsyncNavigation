@@ -15,6 +15,13 @@ public sealed class WeakRegionControlAccessor<TControl> : IRegionControlAccessor
         //_controlRef = control;
     }
 
+    internal void SetTarget(TControl control)
+    {
+        ArgumentNullException.ThrowIfNull(control);
+        _controlRef.SetTarget(control);
+        _alive = true;
+    }
+
     public void ExecuteOn(Action<TControl> action)
     {
         action(Ensure());

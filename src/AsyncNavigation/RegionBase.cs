@@ -12,7 +12,7 @@ public abstract class RegionBase<TRegion, TControl> : IRegion, IRegionPresenter,
     private readonly ViewPlacementCoordinator? _placement;
     private readonly IRegionNavigationService<TRegion> _regionNavigationService;
     private readonly IRegionNavigationHistory _navigationHistory;
-    private readonly IRegionControlAccessor<TControl> _controlAccessor;
+    private readonly WeakRegionControlAccessor<TControl> _controlAccessor;
     protected readonly RegionContext _context = new();
     public RegionBase(string name, TControl control, IServiceProvider serviceProvider)
     {
@@ -26,6 +26,12 @@ public abstract class RegionBase<TRegion, TControl> : IRegion, IRegionPresenter,
 
         RegionControlAccessor.ExecuteOn(InitializeOnRegionCreated);
 
+    }
+
+    protected void ReattachControl(TControl control)
+    {
+        _controlAccessor.SetTarget(control);
+        InitializeOnRegionCreated(control);
     }
 
     IRegionPresenter IRegion.RegionPresenter => this;

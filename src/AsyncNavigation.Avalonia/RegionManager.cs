@@ -1,12 +1,12 @@
 ﻿using AsyncNavigation.Abstractions;
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.VisualTree;
 
 namespace AsyncNavigation.Avalonia;
 
 public sealed class RegionManager : RegionManagerBase
 {
-    private static readonly IDisposable _subscription;
-
     #region RegionName
     public static readonly AttachedProperty<string> RegionNameProperty =
            AvaloniaProperty.RegisterAttached<RegionManager, AvaloniaObject, string>("RegionName");
@@ -54,7 +54,7 @@ public sealed class RegionManager : RegionManagerBase
 
     static RegionManager()
     {
-        _subscription = RegionNameProperty
+        RegionNameProperty
             .Changed
             .AddClassHandler<AvaloniaObject, string>((target, args) => 
             {
@@ -64,22 +64,21 @@ public sealed class RegionManager : RegionManagerBase
                 if (name == old)
                     return;
 
-                if (string.IsNullOrEmpty(name))
+                if (target is ContentControl control)
                 {
-                    if (!string.IsNullOrEmpty(old))
-                    {
+                    control.AttachedToVisualTree -= OnRegionAttached;
+                    if (!string.IsNullOrEmpty(name))
+                        control.AttachedToVisualTree += OnRegionAttached;
+                }
+                if (!string.IsNullOrEmpty(old))
+                {
+                    var region = GetRegionCore(old);
+                    if (region is not ContentRegion contentRegion ||
+                        contentRegion.RegionControlAccessor.TryGet(out var owner) && ReferenceEquals(owner, target))
                         OnRemoveRegionNameCore(old);
-                    }
-                    return;
                 }
-                bool? useCache = null;
-                if (args.Sender.IsSet(PreferCacheProperty))
-                {
-                    useCache = args.Sender.GetValue(PreferCacheProperty);
-                }
-                var serviceProvider = args.Sender.GetValue(ServiceProviderProperty);
-
-                OnAddRegionNameCore(name, target, serviceProvider, useCache);
+                if (!string.IsNullOrEmpty(name))
+                    RegisterRegion(name, target);
             });
     }
 
@@ -89,9 +88,30 @@ public sealed class RegionManager : RegionManagerBase
 
     }
 
-    public override void Dispose()
+    private static void OnRegionAttached(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        base.Dispose();
-        _subscription?.Dispose();
+        if (sender is ContentControl control)
+        {
+            var name = GetRegionName(control);
+            if (!string.IsNullOrEmpty(name) && GetRegionCore(name) is ContentRegion)
+                RegisterRegion(name, control);
+        }
+    }
+
+    private static void RegisterRegion(string name, AvaloniaObject target)
+    {
+        if (target is ContentControl control && GetRegionCore(name) is ContentRegion region)
+        {
+            region.RegionControlAccessor.TryGet(out var previous);
+            if (ReferenceEquals(previous, control) || !control.IsAttachedToVisualTree())
+                return;
+            if (previous is null || !previous.IsAttachedToVisualTree())
+            {
+                region.Reattach(control);
+                return;
+            }
+        }
+        var useCache = target.IsSet(PreferCacheProperty) ? GetPreferCache(target) : null;
+        OnAddRegionNameCore(name, target, GetServiceProvider(target), useCache);
     }
 }

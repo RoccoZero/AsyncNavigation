@@ -313,6 +313,14 @@ public abstract class RegionManagerBase : IRegionManager
         }
     }
 
+    protected static IRegion? GetRegionCore(string name)
+    {
+        lock (_staticLock)
+        {
+            return _current is { } manager && manager.TryGetRegion(name, out var region) ? region : null;
+        }
+    }
+
     protected static void OnRemoveRegionNameCore(string name)
     {
         lock (_staticLock)

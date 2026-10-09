@@ -8,6 +8,8 @@ namespace AsyncNavigation.Avalonia;
 
 public class ContentRegion : RegionBase<ContentRegion, ContentControl>, IRegionPlacementParticipant
 {
+    private IDisposable? _contentBinding;
+
     public ContentRegion(string name, 
         ContentControl contentControl, 
         IServiceProvider serviceProvider, 
@@ -31,9 +33,21 @@ public class ContentRegion : RegionBase<ContentRegion, ContentControl>, IRegionP
             return context?.IndicatorHost.Value?.Host as Control;
         });
 
-        control.Bind(
+        _contentBinding = control.Bind(
             ContentControl.ContentProperty,
             CompiledBinding.Create((RegionContext context) => context.Selected, _context, mode: BindingMode.TwoWay));
+    }
+
+    internal void Reattach(ContentControl control)
+    {
+        _contentBinding?.Dispose();
+        if (RegionControlAccessor.TryGet(out var previous))
+        {
+            previous.Content = null;
+            previous.ContentTemplate = null;
+            previous.Tag = null;
+        }
+        ReattachControl(control);
     }
 
     public override void Dispose()
